@@ -1,0 +1,8 @@
+MQTT_SERVER: "192.168.2.123"
+MQTT_USER: "lavron"
+MQTT_PASSWORD: "Deadbobr23!."
+MQTT_PORT: 1883
+MQTT_TOPIC_PREFIX: "homeassistant/sensor/inverter_"
+INVERTER_NAME: "easun_inverter"
+REPORT_INTERVAL_S: 0
+SERIAL_PORT: "/dev/ttyUSB0"

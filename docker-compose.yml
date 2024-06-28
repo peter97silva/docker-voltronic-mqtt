@@ -1,0 +1,11 @@
+name: voltronic-mqtt
+services:
+    python:
+        device_cgroup_rules:
+            - c 188:* rmw
+        stdin_open: true
+        tty: true
+        container_name: voltronic-mqtt
+
+volumes:
+  pgdata: {}
