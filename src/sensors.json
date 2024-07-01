@@ -1,0 +1,21 @@
+{
+    "QMOD": {
+        "mode": {"index": 0, "type": "str"}
+    },
+    "QPIGS": {
+        "grid_voltage": {"index": 0, "type": "float"},
+        "grid_frequency": {"index": 1, "type": "float"},
+        "output_load_watt": {"index": 5, "type": "int"},
+        "battery_capacity": {"index": 10, "type": "int"},
+        "heatsink_temperature": {"index": 11, "type": "int"},
+        "pv_input_current": {"index": 12, "type": "int"},
+        "scc_voltage": {"index": 14, "type": "float"}
+    },
+    "QPIRI": {
+        "grid_voltage": {"index": 0, "type": "float"},
+        "output_load_watt": {"index": 6, "type": "int"}
+    },
+    "QPIWS": {
+        "warnings": {"index": 0, "type": "str"}
+    }
+}

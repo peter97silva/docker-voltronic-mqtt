@@ -1,4 +1,4 @@
-FROM --platform=linux/arm/v7 ubuntu:jammy
+FROM --platform=linux/arm/v7 ubuntu:jammy as build
 FROM python:3.11-slim
 LABEL Maintainer="lavron.dev"
 WORKDIR /app

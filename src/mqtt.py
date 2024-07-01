@@ -1,19 +1,36 @@
 import paho.mqtt.client as mqtt
+import os
+
+MQTT_SERVER = os.getenv('MQTT_SERVER')
+MQTT_USER = os.getenv('MQTT_USER')
+MQTT_PASSWORD = os.getenv('MQTT_PASSWORD')
+
+INVERTER_NAME = os.getenv('INVERTER_NAME', 'inverter')
+MQTT_PORT = int(os.getenv('MQTT_PORT', 1883))
+MQTT_TOPIC_PREFIX = os.getenv('MQTT_TOPIC_PREFIX', 'homeassistant')
+REPORT_INTERVAL_S = int(os.getenv('REPORT_INTERVAL_S', 1))
 
 
 class MQTT:
-    def __init__(self, config):
-        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, config['INVERTER_NAME'])
+    def __init__(self):
+        self.topic_prefix = f"{MQTT_TOPIC_PREFIX}/sensor/{INVERTER_NAME}_"
+
+        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
         self.client.on_connect = self.on_connect
-        self.client.username_pw_set(config['MQTT_USER'], config['MQTT_PASSWORD'])
+        self.client.username_pw_set(MQTT_USER, MQTT_PASSWORD)
         self.client.connect_timeout = 60
-        self.client.connect_async(config['MQTT_SERVER'], config['MQTT_PORT'], 60)
+        self.client.connect_async(MQTT_SERVER, MQTT_PORT, 60)
         self.client.loop_start()
-        self.topic_prefix = config['MQTT_TOPIC_PREFIX']
 
     def publish(self, data):
-        for parameter in data.__dict__:
-            self.client.publish(f"{self.topic_prefix}{parameter}", data[parameter], qos=1)
+        for query, sensors in data.items():
+            for sensor, data in sensors.items():
+                topic = f"{self.topic_prefix}{sensor}"
+                value = data['value']
+                print("👉topic", topic)
+                print("👉value", value, type(value))
+                self.client.publish(topic, value, qos=1)
+
 
     def on_connect(self, client, userdata, flags, rc):
         print(f"Connected with result code {rc}")

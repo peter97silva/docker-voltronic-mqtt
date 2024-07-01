@@ -1,107 +1,105 @@
-import serial
+import json, os
+
+from serial_port import SerialPort
 
 
-def device_mode(letter):
-    device_modes = {
-        "P": "Power On Mode",
-        "S": "Standby Mode",
-        "L": "Line Mode",
-        "B": "Battery Mode",
-        "F": "Fault Mode",
-        "H": "Power Saving Mode",
-    }
-    return device_modes.get(letter, "Unknown")
+class Voltronic:
+    def __init__(self):
+        script_dir = os.path.dirname(__file__)  # gets the directory where the script resides
+        file_path = os.path.join(script_dir, 'sensors.json')
+        with open(file_path) as json_file:
+            self.sensors = json.load(json_file)
 
+        self.port = SerialPort()
 
-class Sensors:
+    def update(self, query):
+        query_bytes = query_to_bytes(query)
+        response = self.require(query_bytes)
+        print("👉response", response)
+        self.unpack_data(query, response)
+
+    def require(self, query_bytes):
+        self.port.write(query_bytes)
+        response = self.port.read()
+        return response
+
+    def print_sensors(self):
+        for query in self.sensors:
+            for sensor in self.sensors[query]:
+                value = self.sensors[query][sensor].get('value', None)
+                print(f"{sensor}: {value}")
 
     def unpack_data(self, query, data):
+        types = {"str": str, "float": float, "int": int}
         try:
-            data = data.decode().split(" ")
+            data = data.decode('latin1').strip()[1:-2].split(" ")
             print("👉data", data)
 
-            if query == 'QMOD':
-                self.mode = chr(data[0])
-            elif query == 'QPIGS':
-                self.grid_voltage = float(data[0])
-                self.grid_frequency = float(data[1])
-                self.output_load_watt = int(data[5])
-                self.battery_capacity = int(data[10])
-                self.heatsink_temperature = int(data[11])
-                self.pv_input_current = int(data[12])
-                self.scc_voltage = int(data[14])
-                self.pv_input_watts = int(self.scc_voltage*self.pv_input_current)
-            elif query == 'QPIRI':
-                self.grid_voltage = float(data[0])
-                self.output_load_watt = int(data[6])
-            elif query == 'QPIWS':
-                self.warnings = str(data[0])
-            else:
-                print(f"Unknown query: {query}, response: {str(data[0])}")
+            sensors = self.sensors.get(query, {})
+            for sensor, sensor_info in sensors.items():
+                index = sensor_info['index']
+                if sensor == 'warnings':
+                    value = get_warning(data[index])
+                else:
+                    type_func = types[sensor_info['type']]
+                    value = type_func(data[index])
+                print(sensor, ":", value)
+                sensors[sensor]['value'] = value
+
 
         except Exception as e:
             print(f"Error unpacking data: {e}, query: {query}, data: {data}")
 
-    def print(self):
-        for sensor in self.__dict__:
-            print(f"{sensor}: {self.__dict__[sensor]}")
+
+def get_warning(data):
+    warnings_list = [
+        "", "Inverter fault", "Bus over fault", "Bus under fault", "Bus soft fail fault",
+        "Line fail warning", "OPV short warning", "Inverter voltage too low fault",
+        "Inverter voltage too high fault", "Over temperature fault", "Fan locked fault",
+        "Battery voltage too high fault", "Battery low alarm warning", "Reserved",
+        "Battery under shutdown warning", "Reserved", "Overload fault", "EEPROM fault",
+        "Inverter over current fault", "Inverter soft fail fault", "Self test fail fault",
+        "OP DC voltage over fault", "Battery open fault", "Current sensor fail fault",
+        "Battery short fault", "Power limit warning", "PV voltage high warning",
+        "MPPT overload fault", "MPPT overload warning", "Battery too low to charge warning",
+        "", "",
+    ]
+    bit_string = data.rjust(32, '0')
+    return [warnings_list[i] for i, bit in enumerate(bit_string) if bit == '1']
 
 
-class Voltronic:
-    def __init__(self, config):
-        self.sensors = Sensors()
-        self.port = serial.Serial(config['SERIAL_PORT'], 2400, timeout=0.5)
+def query_to_bytes(query):
+    command_bytes = bytearray(query.encode())
+    crc_high, crc_low = crc(command_bytes)
+    ba = bytearray([crc_high, crc_low, 13])
+    command_bytes.extend(ba)
+    return command_bytes
 
-        self.port.open()
-        self.port.reset_input_buffer()
 
-    def get(self, query):
-        response = self.require(query)
+def check_response_valid(response):
+    if response is None:
+        return False, {"validity check": ["Error: Response was empty", ""]}
+    if type(response) is dict:
+        response["validity check"] = ["Error: incorrect response format", ""]
+        return False, response
+    if len(response) <= 3:
+        return False, {"validity check": ["Error: Response too short", ""]}
 
-        is_valid, errors = self.check_response_valid(response)
-        if not is_valid:
-            print("errors", errors)
-            return
-        self.sensors.unpack_data(query, response[0])
+    if type(response) is str:
+        if "(NAK" in response:
+            return False, {"validity check": ["Error: NAK", ""]}
+        crc_high, crc_low = crc(response[:-3])
+        if [ord(response[-3]), ord(response[-2])] != [crc_high, crc_low]:
+            return False, {"validity check": ["Error: Invalid response CRCs", ""]}
+    elif type(response) is bytes:
+        if b"(NAK" in response:
+            return False, {"validity check": ["Error: NAK", ""]}
 
-    def require(self, query):
-        self.port.reset_input_buffer()
-        query_bytes = self._query_to_bytes(query)
-        self.port.write(query_bytes)
-        response = self.port.readlines(None)
-        return response
+        crc_high, crc_low = crc(response[:-3])
+        if response[-3:-1] != bytes([crc_high, crc_low]):
+            return False, {"validity check": ["Error: Invalid response CRCs", ""]}
 
-    def _query_to_bytes(self, query):
-        command_bytes = bytearray(query.encode())
-        crc_high, crc_low = crc(command_bytes)
-        ba = bytearray([crc_high, crc_low, 13])
-        command_bytes.extend(ba)
-        return command_bytes
-
-    def check_response_valid(self, response):
-        if response is None:
-            return False, {"validity check": ["Error: Response was empty", ""]}
-        if type(response) is dict:
-            response["validity check"] = ["Error: incorrect response format", ""]
-            return False, response
-        if len(response) <= 3:
-            return False, {"validity check": ["Error: Response to short", ""]}
-
-        if type(response) is str:
-            if "(NAK" in response:
-                return False, {"validity check": ["Error: NAK", ""]}
-            crc_high, crc_low = crc(response[:-3])
-            if [ord(response[-3]), ord(response[-2])] != [crc_high, crc_low]:
-                return False, {"validity check": ["Error: Invalid response CRCs", ""]}
-        elif type(response) is bytes:
-            if b"(NAK" in response:
-                return False, {"validity check": ["Error: NAK", ""]}
-
-            crc_high, crc_low = crc(response[:-3])
-            if response[-3:-1] != bytes([crc_high, crc_low]):
-                return False, {"validity check": ["Error: Invalid response CRCs", ""]}
-
-        return True, {}
+    return True, {}
 
 
 def crc(data_bytes):

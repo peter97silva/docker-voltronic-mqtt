@@ -1,34 +1,35 @@
 import time
-import yaml
 from voltronic import Voltronic
 from mqtt import MQTT
+import os
 
+REPORT_INTERVAL_S = int(os.getenv('REPORT_INTERVAL_S', 1))
 
-def secrets_constructor(loader, node):
-    with open('config/secrets.yml', 'r') as secrets_file:
-        secrets = yaml.safe_load(secrets_file)
-    secret_name = node.value[:].strip()  # :[] to copy the node value
-    return secrets.get(secret_name)
-
-
-yaml.SafeLoader.add_constructor('!secrets', secrets_constructor)
-
-file = open('config/config.yml')
-config = yaml.safe_load(file)
-
-inverter = Voltronic(config)
-client = MQTT(config)
+inverter = Voltronic()
+client = MQTT()
 
 
 def loop():
     while True:
-        inverter.get("QMOD")
-        inverter.get("QPIGS")
-        inverter.get("QPIWS")
-        inverter.sensors.print()
-        client.publish(inverter.sensors)
-        time.sleep(config['REPORT_INTERVAL_S'])
+        inverter.update("QMOD")
+        inverter.update("QPIGS")
+        inverter.update("QPIWS")
+        inverter.update("QPIRI")
 
+        inverter.print_sensors()
+
+        client.publish(inverter.sensors)
+        time.sleep(REPORT_INTERVAL_S)
+
+def single():
+    inverter.update("QMOD")
+    inverter.update("QPIGS")
+    inverter.update("QPIWS")
+    inverter.update("QPIRI")
+
+    inverter.print_sensors()
+
+    # client.publish(inverter.sensors)
 
 if __name__ == "__main__":
-    loop()
+    single()
