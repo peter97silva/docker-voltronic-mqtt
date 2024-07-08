@@ -9,7 +9,9 @@
 - Heatsink temperature
 - PV Input Current
 - SCC voltage
-### To run (edit as needed):
+- Warnings
+### How to run
+Change credentials to your MQTT server and USB port in the command below and run it.
 ```bash
 docker run -t -i --privileged -v /dev:/dev --restart=always --name voltronic-mqtt --pull=always -e \
 MQTT_PASSWORD='your_password' -e \
@@ -21,3 +23,7 @@ lavron/voltronic-mqtt:latest
 
 ### Home Assistant users
 Copy the content of 'ha-sensors.yaml' to your 'configuration.yaml' file. Edit as needed.
+
+### Source
+https://github.com/lavron/docker-voltronic-mqtt
+
