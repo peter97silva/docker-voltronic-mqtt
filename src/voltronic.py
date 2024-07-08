@@ -5,7 +5,7 @@ from serial_port import SerialPort
 
 class Voltronic:
     def __init__(self):
-        script_dir = os.path.dirname(__file__)  # gets the directory where the script resides
+        script_dir = os.path.dirname(__file__)
         file_path = os.path.join(script_dir, 'sensors.json')
         with open(file_path) as json_file:
             self.sensors = json.load(json_file)
@@ -44,7 +44,6 @@ class Voltronic:
                     type_func = types[sensor_info['type']]
                     value = type_func(data[index])
                 sensors[sensor]['value'] = value
-
 
         except Exception as e:
             print(f"Error unpacking data: {e}, query: {query}, data: {data}")
@@ -126,4 +125,3 @@ def crc(data_bytes):
     crc = crc_high << 8
     crc += crc_low
     return [crc_high, crc_low]
-
