@@ -14,6 +14,7 @@ mqtt:
       state_topic: "homeassistant/sensor/inverter_grid_voltage"
       unique_id: "inverter_grid_voltage"
       device_class: "voltage"
+      unit_of_measurement: "V"
       device:
         name: "Inverter"
         identifiers:
@@ -21,9 +22,10 @@ mqtt:
         model: "iSloar-SML-III"
         manufacturer: "EASun"
     - name: "Inverter AC Grid Frequency"
-      state_topic: "homeassistant/sensor/inverter_ac_grid_frequency"
-      unique_id: "inverter_ac_grid_frequency"
+      state_topic: "homeassistant/sensor/inverter_grid_frequency"
+      unique_id: "inverter_grid_frequency"
       device_class: "frequency"
+      unit_of_measurement: "Hz"
       device:
         name: "Inverter"
         identifiers:
@@ -34,6 +36,7 @@ mqtt:
       state_topic: "homeassistant/sensor/inverter_battery_capacity"
       unique_id: "inverter_battery_capacity"
       device_class: "battery"
+      unit_of_measurement: "%"
       device:
         name: "Inverter"
         identifiers:
@@ -44,16 +47,48 @@ mqtt:
       state_topic: "homeassistant/sensor/inverter_output_load_watt"
       unique_id: "inverter_output_load_watt"
       device_class: "power"
+      unit_of_measurement: "W"
       device:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
         model: "iSloar-SML-III"
         manufacturer: "EASun"
-    - name: "Heatsing Temperature"
+    - name: "Heatsink Temperature"
       state_topic: "homeassistant/sensor/inverter_heatsink_temperature"
       unique_id: "inverter_heatsink_temperature"
       device_class: "temperature"
+      device:
+        name: "Inverter"
+        identifiers:
+          - "solar_inverter"
+        model: "iSloar-SML-III"
+        manufacturer: "EASun"
+    - name: "PV Input Current"
+      state_topic: "homeassistant/sensor/inverter_pv_input_current"
+      unique_id: "inverter_pv_input_current"
+      device_class: "power"
+      unit_of_measurement: "W"
+      device:
+        name: "Inverter"
+        identifiers:
+          - "solar_inverter"
+        model: "iSloar-SML-III"
+        manufacturer: "EASun"
+    - name: "SCC Voltage"
+      state_topic: "homeassistant/sensor/inverter_scc_voltage"
+      unique_id: "inverter_scc_voltage"
+      device_class: "voltage"
+      unit_of_measurement: "V"
+      device:
+        name: "Inverter"
+        identifiers:
+          - "solar_inverter"
+        model: "iSloar-SML-III"
+        manufacturer: "EASun"
+    - name: "Inverter Warnings"
+      state_topic: "homeassistant/sensor/inverter_warnings"
+      unique_id: "inverter_warnings"
       device:
         name: "Inverter"
         identifiers:

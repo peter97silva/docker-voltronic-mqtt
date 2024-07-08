@@ -16,7 +16,6 @@ class MQTT:
         self.topic_prefix = f"{MQTT_TOPIC_PREFIX}/sensor/{INVERTER_NAME}_"
 
         self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
-        self.client.on_connect = self.on_connect
         self.client.username_pw_set(MQTT_USER, MQTT_PASSWORD)
         self.client.connect_timeout = 60
         self.client.connect_async(MQTT_SERVER, MQTT_PORT, 60)
@@ -27,10 +26,6 @@ class MQTT:
             for sensor, data in sensors.items():
                 topic = f"{self.topic_prefix}{sensor}"
                 value = data['value']
-                print("👉topic", topic)
-                print("👉value", value, type(value))
+                print("👉", topic, value)
                 self.client.publish(topic, value, qos=1)
 
-
-    def on_connect(self, client, userdata, flags, rc):
-        print(f"Connected with result code {rc}")

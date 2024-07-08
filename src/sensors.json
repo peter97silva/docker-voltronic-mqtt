@@ -11,10 +11,6 @@
         "pv_input_current": {"index": 12, "type": "int"},
         "scc_voltage": {"index": 14, "type": "float"}
     },
-    "QPIRI": {
-        "grid_voltage": {"index": 0, "type": "float"},
-        "output_load_watt": {"index": 6, "type": "int"}
-    },
     "QPIWS": {
         "warnings": {"index": 0, "type": "str"}
     }

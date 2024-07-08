@@ -15,7 +15,6 @@ class Voltronic:
     def update(self, query):
         query_bytes = query_to_bytes(query)
         response = self.require(query_bytes)
-        print("👉response", response)
         self.unpack_data(query, response)
 
     def require(self, query_bytes):
@@ -32,18 +31,18 @@ class Voltronic:
     def unpack_data(self, query, data):
         types = {"str": str, "float": float, "int": int}
         try:
-            data = data.decode('latin1').strip()[1:-2].split(" ")
-            print("👉data", data)
+            data = data[0]
 
+            data = data.decode('latin1').strip()[1:-2].split(" ")
             sensors = self.sensors.get(query, {})
             for sensor, sensor_info in sensors.items():
                 index = sensor_info['index']
+
                 if sensor == 'warnings':
                     value = get_warning(data[index])
                 else:
                     type_func = types[sensor_info['type']]
                     value = type_func(data[index])
-                print(sensor, ":", value)
                 sensors[sensor]['value'] = value
 
 
@@ -65,7 +64,7 @@ def get_warning(data):
         "", "",
     ]
     bit_string = data.rjust(32, '0')
-    return [warnings_list[i] for i, bit in enumerate(bit_string) if bit == '1']
+    return ', '.join([warnings_list[i] for i, bit in enumerate(bit_string) if bit == '1'])
 
 
 def query_to_bytes(query):
@@ -100,7 +99,6 @@ def check_response_valid(response):
             return False, {"validity check": ["Error: Invalid response CRCs", ""]}
 
     return True, {}
-
 
 def crc(data_bytes):
     """
@@ -153,3 +151,4 @@ def crc(data_bytes):
     crc = crc_high << 8
     crc += crc_low
     return [crc_high, crc_low]
+
