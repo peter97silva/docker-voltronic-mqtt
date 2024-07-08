@@ -63,7 +63,7 @@ mqtt:
       state_topic: "homeassistant/sensor/inverter_heatsink_temperature"
       unique_id: "inverter_heatsink_temperature"
       device_class: "temperature"
-      unit_of_measurement: "U+2103"
+      unit_of_measurement: "C"
       device:
         name: "Inverter"
         identifiers:
