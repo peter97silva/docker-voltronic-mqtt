@@ -75,31 +75,6 @@ def query_to_bytes(query):
     return command_bytes
 
 
-def check_response_valid(response):
-    if response is None:
-        return False, {"validity check": ["Error: Response was empty", ""]}
-    if type(response) is dict:
-        response["validity check"] = ["Error: incorrect response format", ""]
-        return False, response
-    if len(response) <= 3:
-        return False, {"validity check": ["Error: Response too short", ""]}
-
-    if type(response) is str:
-        if "(NAK" in response:
-            return False, {"validity check": ["Error: NAK", ""]}
-        crc_high, crc_low = crc(response[:-3])
-        if [ord(response[-3]), ord(response[-2])] != [crc_high, crc_low]:
-            return False, {"validity check": ["Error: Invalid response CRCs", ""]}
-    elif type(response) is bytes:
-        if b"(NAK" in response:
-            return False, {"validity check": ["Error: NAK", ""]}
-
-        crc_high, crc_low = crc(response[:-3])
-        if response[-3:-1] != bytes([crc_high, crc_low]):
-            return False, {"validity check": ["Error: Invalid response CRCs", ""]}
-
-    return True, {}
-
 def crc(data_bytes):
     """
     Calculates CRC for supplied data_bytes
