@@ -6,9 +6,9 @@
 - Grid frequency
 - Output load watt
 - Battery capacity (SOC)
-- Inverter heatsink temperature
-- PV voltage
-
+- Heatsink temperature
+- PV Input Current
+- SCC voltage
 ### To run (edit as needed):
 ```bash
 docker run -t -i --privileged -v /dev:/dev --restart=always --name voltronic-mqtt --pull=always -e \
