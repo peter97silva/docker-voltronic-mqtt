@@ -1,4 +1,4 @@
-FROM --platform=linux/arm/v7 python:3.11-slim
+FROM python:3.11-slim
 LABEL Maintainer="lavron.dev"
 WORKDIR /app
 COPY requirements.txt ./
