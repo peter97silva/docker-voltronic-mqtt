@@ -24,8 +24,11 @@ class MQTT:
     def publish(self, data):
         for query, sensors in data.items():
             for sensor, data in sensors.items():
-                topic = f"{self.topic_prefix}{sensor}"
-                value = data['value']
-                print("👉", topic, value)
-                self.client.publish(topic, value, qos=1)
+                try:
+                    topic = f"{self.topic_prefix}{sensor}"
+                    value = data['value']
+                    print("👉", topic, value)
+                    self.client.publish(topic, value, qos=1)
+                except Exception as e:
+                    print(f"Error publishing data: {e}, query: {query}, sensor: {sensor}, data: {data}")
 
