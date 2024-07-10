@@ -1,4 +1,6 @@
-# MQTT interface for Voltronic (aka MPPSolar, Axpert, Powland, EASun. etc.) solar inverters.
+# MQTT interface for Voltronic (aka MPPSolar, Axpert, Powland, EASun, etc) solar inverters.
+
+Supports protocols PI30 and PI41 devices.
 
 ### Exposed sensors:
 - Inverter status
