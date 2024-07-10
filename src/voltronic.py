@@ -31,6 +31,7 @@ class Voltronic:
     def unpack_data(self, query, data):
         types = {"str": str, "float": float, "int": int}
         try:
+            print("👉data", data)
             data = data[0]
 
             data = data.decode('latin1').strip()[1:-2].split(" ")
