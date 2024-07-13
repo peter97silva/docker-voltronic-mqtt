@@ -8,8 +8,8 @@
         "output_load_watt": {"index": 5, "type": "int"},
         "battery_capacity": {"index": 10, "type": "int"},
         "heatsink_temperature": {"index": 11, "type": "int"},
-        "pv_input_voltage": {"index": 13, "type": "int"},
-        "pv_input_power": {"index": 19, "type": "float"}
+        "pv_input_voltage": {"index": 13, "type": "float"},
+        "pv_input_watt": {"index": 19, "type": "int"}
     },
     "QPIWS": {
         "warnings": {"index": 0, "type": "str"}
