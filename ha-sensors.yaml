@@ -72,8 +72,8 @@ mqtt:
         manufacturer: "EASun"
 
     - name: "PV Input Current"
-      state_topic: "homeassistant/sensor/inverter_pv_input_current"
-      unique_id: "inverter_pv_input_current"
+      state_topic: "homeassistant/sensor/inverter_pv_input_watt"
+      unique_id: "inverter_pv_input_watt"
       device_class: "power"
       unit_of_measurement: "W"
       device:
@@ -83,9 +83,9 @@ mqtt:
         model: "iSloar-SML-III"
         manufacturer: "EASun"
 
-    - name: "SCC Voltage"
-      state_topic: "homeassistant/sensor/inverter_scc_voltage"
-      unique_id: "inverter_scc_voltage"
+    - name: "PV Input Voltage"
+      state_topic: "homeassistant/sensor/inverter_pv_input_voltage"
+      unique_id: "inverter_pv_input_voltage"
       device_class: "voltage"
       unit_of_measurement: "V"
       device:
