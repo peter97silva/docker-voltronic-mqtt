@@ -26,6 +26,9 @@ lavron/voltronic-mqtt:latest
 ### Home Assistant users
 Copy the content of 'ha-sensors.yaml' to your 'configuration.yaml' file. Edit as needed.
 
+### Aditional protocols and sensors
+Please check [this discussion](https://github.com/lavron/docker-voltronic-mqtt/discussions/5).
+
 ### Source
 https://github.com/lavron/docker-voltronic-mqtt
 
