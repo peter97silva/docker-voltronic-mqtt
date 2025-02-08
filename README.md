@@ -20,7 +20,7 @@ MQTT_PASSWORD='your_password' -e \
 MQTT_SERVER='your_server' -e \
 MQTT_USER='your_username' -e \
 SERIAL_PORT='/dev/ttyUSB0' \
-lavron/voltronic-mqtt:latest
+petethasilva/voltronic-mqtt:latest
 ```
 
 ### Home Assistant users
