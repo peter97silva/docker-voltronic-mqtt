@@ -71,7 +71,7 @@ mqtt:
         model: "iSloar-SML-III"
         manufacturer: "EASun"
 
-    - name: "PV Input Current"
+    - name: "PV Input Wattage"
       state_topic: "homeassistant/sensor/inverter_pv_input_watt"
       unique_id: "inverter_pv_input_watt"
       device_class: "power"
