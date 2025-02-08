@@ -6,6 +6,5 @@ services:
         stdin_open: true
         tty: true
         container_name: voltronic-mqtt
-platform: linux/arm64/v8
 volumes:
   pgdata: {}
