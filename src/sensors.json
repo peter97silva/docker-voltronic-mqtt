@@ -6,7 +6,7 @@
         "grid_voltage": {"index": 0, "type": "float"},
         "grid_frequency": {"index": 1, "type": "float"},
         "AC_Output_voltage": {"index": 2, "type": "float"},
-        "AC_Output_frequency": {"index": 3, "type": "float"},
+        "AC_Output_freq": {"index": 3, "type": "float"},
         "AC_Output_Apparent_Power": {"index": 4, "type": "int"},
         "output_load_watt": {"index": 5, "type": "int"},
         "battery_Voltage": {"index": 8, "type": "float"},
