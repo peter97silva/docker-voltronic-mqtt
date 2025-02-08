@@ -8,8 +8,8 @@ mqtt:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
-        model: "iSloar-SML-III"
-        manufacturer: "EASun"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
 
     - name: "AC Grid Voltage"
       state_topic: "homeassistant/sensor/inverter_grid_voltage"
@@ -20,8 +20,8 @@ mqtt:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
-        model: "iSloar-SML-III"
-        manufacturer: "EASun"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
 
     - name: "AC Grid Frequency"
       state_topic: "homeassistant/sensor/inverter_grid_frequency"
@@ -32,8 +32,20 @@ mqtt:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
-        model: "iSloar-SML-III"
-        manufacturer: "EASun"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
+
+      - name: "AC Output Apparent Power"
+      state_topic: "homeassistant/sensor/inverter_AC_Output_Apparent_Power"
+      unique_id: "AC_Output_Apparent_Power"
+      device_class: "apparent_power"
+      unit_of_measurement: "Va"
+      device:
+        name: "Inverter"
+        identifiers:
+          - "solar_inverter"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
 
     - name: "Battery Remaining Capacity"
       state_topic: "homeassistant/sensor/inverter_battery_capacity"
@@ -44,8 +56,8 @@ mqtt:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
-        model: "iSloar-SML-III"
-        manufacturer: "EASun"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
 
     - name: "Output Load"
       state_topic: "homeassistant/sensor/inverter_output_load_watt"
@@ -56,8 +68,8 @@ mqtt:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
-        model: "iSloar-SML-III"
-        manufacturer: "EASun"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
 
     - name: "Heatsink Temperature"
       state_topic: "homeassistant/sensor/inverter_heatsink_temperature"
@@ -68,8 +80,8 @@ mqtt:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
-        model: "iSloar-SML-III"
-        manufacturer: "EASun"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
 
     - name: "PV Input Wattage"
       state_topic: "homeassistant/sensor/inverter_pv_input_watt"
@@ -80,8 +92,8 @@ mqtt:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
-        model: "iSloar-SML-III"
-        manufacturer: "EASun"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
 
     - name: "PV Input Voltage"
       state_topic: "homeassistant/sensor/inverter_pv_input_voltage"
@@ -92,8 +104,8 @@ mqtt:
         name: "Inverter"
         identifiers:
           - "solar_inverter"
-        model: "iSloar-SML-III"
-        manufacturer: "EASun"
+        model: "Axpert VM IV"
+        manufacturer: "Voltronic"
 
     - name: "Warnings"
       state_topic: "homeassistant/sensor/inverter_warnings"
