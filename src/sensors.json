@@ -5,10 +5,17 @@
     "QPIGS": {
         "grid_voltage": {"index": 0, "type": "float"},
         "grid_frequency": {"index": 1, "type": "float"},
+        "AC_Output_voltage": {"index": 2, "type": "float"},
+        "AC_Output_frequency": {"index": 3, "type": "float"},
+        "AC_Output_Apparent_Power": {"index": 4, "type": "int"},
         "output_load_watt": {"index": 5, "type": "int"},
+        "battery_Voltage": {"index": 8, "type": "float"},
+        "battery_charging_current": {"index": 9, "type": "int"},
         "battery_capacity": {"index": 10, "type": "int"},
         "heatsink_temperature": {"index": 11, "type": "int"},
+        "pv_input_current": {"index": 12, "type": "float"},
         "pv_input_voltage": {"index": 13, "type": "float"},
+        "battery_discharge_current": {"index": 15, "type": "int"},
         "pv_input_watt": {"index": 19, "type": "int"}
     },
     "QPIWS": {
